@@ -12,11 +12,8 @@ RUN go mod download
 # Copy the entire source code
 COPY . .
 
-# Copy .env file
-COPY .env .
-
 # Test the application
-RUN CGO_ENABLED=0 go test -v
+RUN CGO_ENABLED=0 go test -v ./...
 
 # Build the application
 RUN go build -o ./out/fun-exercise-api .
@@ -27,7 +24,6 @@ FROM alpine:3.19
 
 # Copy the built binary and .env from the previous stage
 COPY --from=build-base /app/out/fun-exercise-api /app/fun-exercise-api
-COPY --from=build-base /app/.env /app/.env
 
 # Set the binary as the entry point
 CMD ["/app/fun-exercise-api"]
