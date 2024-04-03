@@ -115,8 +115,7 @@ func (h *Handler) CreateWalletHandler(c echo.Context) error {
 	var wallet WalletPayload
 	var err error
 	if err = c.Bind(&wallet); err != nil {
-		// return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-		return errortype.ValidationError{Message: err.Error()}
+		return err
 	}
 
 	if err = c.Validate(&wallet); err != nil {

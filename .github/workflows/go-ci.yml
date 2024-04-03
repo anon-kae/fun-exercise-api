@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: Build and Test Go Application
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,11 +23,9 @@ jobs:
         run: go version
       - name: Install dependencies
         run: go mod download
+      - name: Go Build
+        run: go build -v ./...
       - name: Run tests
-        run: go test -race -coverprofile=test_report.txt -covermode=atomic ./wallet ./helper ./middleware # Run tests and generate test report
-      - name: Upload test coverage
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-report
-          path: test_report.txt
-      
+        run: go test -v ./... # Run tests
+
+        
