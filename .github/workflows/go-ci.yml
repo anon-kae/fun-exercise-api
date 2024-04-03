@@ -36,7 +36,18 @@ jobs:
     steps:
       - name: Check if tests passed
         run: |
-          if [ ! -f "test_report.txt" ]; then
+          if [ -f "test_report.txt" ]; then
+            echo "Tests passed, ready for merge"
+          else
             echo "Tests failed, not ready for merge"
             exit 1
           fi
+  merge:
+    runs-on: ubuntu-latest
+    needs: check-before-merge
+    if: ${{ needs.check-before-merge.result == 'success' }}
+    steps:
+      - name: Merge pull request
+        uses: pullreminders/merge-action@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
