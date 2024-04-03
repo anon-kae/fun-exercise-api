@@ -29,4 +29,14 @@ jobs:
         with:
           name: test-report
           path: test_report.txt
-      
+
+  check-before-merge:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Check if tests passed
+        run: |
+          if [ ! -f "test_report.txt" ]; then
+            echo "Tests failed, not ready for merge"
+            exit 1
+          fi
